@@ -1,0 +1,83 @@
+!
+version 12.2
+no service pad
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+{% include './ios/hostname.j2' %}
+!
+boot-start-marker
+boot-end-marker
+!
+enable secret 5 $1$/SaP$nnhouCkExgoODsID8B71J0
+!
+username admin privilege 15 password 0 admin
+username admin1 password 0 admin123
+!
+!
+{% if config_context["aaa-new-model"] == false %}
+no aaa new-model
+{% else %}
+aaa new-model
+{% endif %}
+!
+{% include "./ios/call_home.j2" %}
+!
+{% include './ios/dns.j2' %}
+!
+aaa authentication login default enable
+aaa authorization exec default local 
+!
+!
+!
+aaa session-id common
+clock timezone UTC -7
+clock summer-time UTC recurring
+system mtu routing 1500
+ip routing
+ip domain-name ntc.com
+!
+!
+!
+!
+crypto pki trustpoint TP-self-signed-959340032
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-959340032
+ revocation-check none
+ rsakeypair TP-self-signed-959340032
+!
+!
+crypto pki certificate chain TP-self-signed-959340032
+ certificate self-signed 01 nvram:IOS-Self-Sig#3232.cer
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+vlan internal allocation policy ascending
+!
+ip ssh version 2
+ip scp server enable
+!
+!
+{% include './ios/interfaces.j2' %}
+!
+ip default-gateway 172.16.0.2
+ip classless
+ip http server
+ip http secure-server
+!
+!
+vstack
+!
+line con 0
+line vty 0 4
+ password admin
+ transport input ssh
+line vty 5 15
+ password admin
+ transport input ssh
+!
+end
