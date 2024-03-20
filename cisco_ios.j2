@@ -75,6 +75,13 @@ ip http secure-server
 !
 vstack
 !
+!
+ip access-list standard {{ config_context["acl"]["name"] }}
+{% for rule in config_context["acl"]["rules"] %}
+ {{rule}}
+{% endfor %}
+!
+!
 line con 0
 line vty 0 4
  password admin
