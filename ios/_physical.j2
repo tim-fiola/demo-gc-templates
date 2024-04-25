@@ -6,7 +6,7 @@ no switchport
 {% if interface["ip_addresses"] | length > 0 %}
 {% for addr in interface["ip_addresses"] %}
 {% if addr["address"] is defined %}
- ip address {{ addr["host"] }} {{ addr["address"]["netmask"] }}
+ ip address {{ addr["host"] }} {{ addr["address"]| get_netmask }}
 {% endif %}
 {% endfor %}
 {% else %}
