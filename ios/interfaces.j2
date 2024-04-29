@@ -7,7 +7,7 @@
 {% endif %}
 {% endfor %}
 {% for interface in interfaces %}
-{% if 'Loop' not in interface["name"] and 'Vlan1' not in interface["name"] %}
+{% if 'Loop' not in interface["name"] and 'Vlan1' not in interface["name"] and GigabitEthernet not in interface["name"] %}
 {% include "./ios/_physical.j2" %}
 {% endif %}
 {% endfor %}
