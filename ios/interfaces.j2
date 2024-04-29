@@ -1,10 +1,12 @@
 {% for interface in interfaces %}
 {% if 'Loop' in interface["name"] %}
 {% include "./ios/_loopback.j2" %}
+{% if 'Vlan1' in interface["name"] %}
+{% include "./ios/_vlan1.j2" %}
 {% endif %}
 {% endfor %}
 {% for interface in interfaces %}
-{% if 'Loop' not in interface["name"] %}
+{% if 'Loop' not in interface["name"] and 'Vlan1' not in interface["name"] %}
 {% include "./ios/_physical.j2" %}
 {% endif %}
 {% endfor %}
