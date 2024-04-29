@@ -5,7 +5,7 @@ interface Vlan1
 {% if interface["ip_addresses"] | length > 0 %}
 {% for addr in interface["ip_addresses"] %}
 {% if addr["address"] is defined %}
- ip address {{ addr["address"] }}
+ ip address {{ addr["host"] }} {{ ("0.0.0.0/" ~ addr["mask_length"]) | get_netmask }}
 {% endif %}
 {% endfor %}
 {% else %}
